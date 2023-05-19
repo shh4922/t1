@@ -16,6 +16,7 @@
 		009ABC052A1601AA00FFD9F0 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009ABC042A1601AA00FFD9F0 /* HomeView.swift */; };
 		009ABC072A1612B500FFD9F0 /* HomeFilterEnum.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009ABC062A1612B500FFD9F0 /* HomeFilterEnum.swift */; };
 		009ABC092A162CC000FFD9F0 /* myView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 009ABC082A162CC000FFD9F0 /* myView.swift */; };
+		771974A82A17417300910E7F /* GeoTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 771974A72A17417300910E7F /* GeoTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,7 @@
 		009ABC042A1601AA00FFD9F0 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		009ABC062A1612B500FFD9F0 /* HomeFilterEnum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFilterEnum.swift; sourceTree = "<group>"; };
 		009ABC082A162CC000FFD9F0 /* myView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = myView.swift; sourceTree = "<group>"; };
+		771974A72A17417300910E7F /* GeoTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,6 +72,7 @@
 				009ABC042A1601AA00FFD9F0 /* HomeView.swift */,
 				009ABC062A1612B500FFD9F0 /* HomeFilterEnum.swift */,
 				009ABC082A162CC000FFD9F0 /* myView.swift */,
+				771974A72A17417300910E7F /* GeoTest.swift */,
 			);
 			path = t1;
 			sourceTree = "<group>";
@@ -155,6 +158,7 @@
 				002A95F12A10E13C004D7D38 /* ContentView.swift in Sources */,
 				009ABC092A162CC000FFD9F0 /* myView.swift in Sources */,
 				009ABBFF2A15D93800FFD9F0 /* TabbarButton.swift in Sources */,
+				771974A82A17417300910E7F /* GeoTest.swift in Sources */,
 				002A95FD2A10E14A004D7D38 /* vm.swift in Sources */,
 				009ABC052A1601AA00FFD9F0 /* HomeView.swift in Sources */,
 				002A95EF2A10E13C004D7D38 /* t1App.swift in Sources */,

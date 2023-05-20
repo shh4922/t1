@@ -1,22 +1,34 @@
 import SwiftUI
 
 struct GeoTest: View {
+    
+    func getGeoProxy(_ proxy : GeometryProxy){
+        print(proxy.frame(in: .global).minY)
+    }
     var body: some View {
-        ZStack(alignment: .top){
-            ScrollView(.vertical,showsIndicators: false){
-                GeometryReader{ geo in
-                    VStack{
-                        Text("dkdkdkdkdkdkkdkddkdkdkdkdkdkkdkddkdkdkdkdkdkkdkddkdkdkdkdkdkkdkddkdkdkdkdkdkkdkddkdkdkdkdkdkkdkddkdkdkdkdkdkkdkddkdkdkdkdkdkkdkddkdkdkdkdkdkdkdkdkkdkd")
-                            .lineLimit(nil)
-                            .frame(maxWidth: .infinity)
-                    }
-                    .frame(height: max(geo.size.height, geo.size.width)) 
+        
+        GeometryReader { proxy1 in
+            
+            GeometryReader { proxy2 in
+            
+                GeometryReader { proxy3 in
+//                    print(proxy3.frame(in: .global).minY)
+                    
                 }
+                .frame(width: 200,height: 200)
+                .background(.green)
                 
                 
             }
-            .frame(maxWidth: .infinity)
+            .frame(width: 300,height: 300)
+            .background(.orange)
+            
+            
+            
         }
+        .frame(width: 400,height: 400)
+        .background(.red)
+        
     }
 }
 

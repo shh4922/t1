@@ -12,29 +12,33 @@ struct HomeView: View {
     
     @State var isBackgroundBlew = false
     @State var screenWidth = UIScreen.main.bounds.size.width
-    
+    @State var screenWidth2 = UIScreen.main.bounds.width
+    @State var contentHeight = CGSize.zero.height
     
     
     private let imageHeight: CGFloat = 200 // 1
     private let collapsedImageHeight: CGFloat = 75 // 2
     
-    //
+    
+    //get ScrollOffset
     private func getScrollOffset(_ geometry: GeometryProxy) -> CGFloat {
         geometry.frame(in: .global).minY
     }
     
-    
-    //HeaderOffset Get
+    //이미지 아래로 스크롤할시, 그만큰 offset을 위로 올려야 이미지가 늘어나는 느낌이 드니깐
+    //그걸 계산하기 위해 만든 함수
     private func getOffsetForHeaderImage(_ geometry: GeometryProxy) -> CGFloat {
+        
         let offset = getScrollOffset(geometry)
-        let sizeOffScreen = imageHeight - collapsedImageHeight // 3
-//        print(offset)
+        let sizeOffScreen = imageHeight - collapsedImageHeight
+        print(offset)
+        
+        //이건 스크롤을 위로 올렸을시, 한 200-75 = 125
+        //125보다 높게올라가면 이미지의 offset을 그냥
+        //사실상 이미지가 있는것처럼 보이는것은, 그만큼 offset을 계속 늘려주고있어서 있는것거처럼 보이는것임.
         
         if offset < -sizeOffScreen {
-            // Since we want 75 px fixed on the screen we get our offset of -225 or anything less than. Take the abs value of
             let imageOffset = abs(min(-sizeOffScreen, offset))
-            
-            // Now we can the amount of offset above our size off screen. So if we've scrolled -250px our size offscreen is -225px we offset our image by an additional 25 px to put it back at the amount needed to remain offscreen/amount on screen.
             return imageOffset - sizeOffScreen
         }
         
@@ -43,98 +47,84 @@ struct HomeView: View {
         if offset > 0 {
             return -offset
         }
-//        
-        
         return 0
     }
     
     
     private func getHeightForHeaderImage(_ geometry: GeometryProxy) -> CGFloat {
+        
+        //처음 offset은 0 임 일단은.
         let offset = getScrollOffset(geometry)
-        let imageHeight = geometry.size.height
-
+        
+        //스크롤아래로 당기면 오프셋크기 늘어나는데,
+        //이미지사이즈도 그만큼 같이 늘어나게함.
         if offset > 0 {
             return imageHeight + offset
         }
-
+        
         return imageHeight
     }
     
-    
+    //MARK: - blur
     private func getBlurRadiusForImage(_ geometry: GeometryProxy) -> CGFloat {
         // 2
         let offset = geometry.frame(in: .global).maxY
-
+        
         let height = geometry.size.height
         let blur = (height - max(offset, 0)) / height // 3 (values will range from 0 - 1)
-        return blur * 6 // Values will range from 0 - 6
+        return blur * 20 // Values will range from 0 - 6
     }
     private func getBlurRadiusForProfileImage(_ geometry: GeometryProxy) -> CGFloat {
         // 2
         let offset = geometry.frame(in: .global).maxY
-
-        let height = geometry.size.height
-        let blur = (height - max(offset, 0)) / height // 3 (values will range from 0 - 1)
-        return blur * 100 // Values will range from 0 - 6
-    }
-    private func getBlurRadiusForVstack(_ geometry: GeometryProxy) -> CGFloat {
         
-        let offset = geometry.frame(in: .global).maxY - 30
-        print(offset)
         let height = geometry.size.height
         let blur = (height - max(offset, 0)) / height // 3 (values will range from 0 - 1)
-        return blur * 10 // Values will range from 0 - 6
+        return blur * 200 // Values will range from 0 - 6
     }
-    
-    
     var body: some View {
+        
         ZStack(alignment: .top){
             ScrollView(.vertical,showsIndicators: false){
-                //프로필배경 & 프로필이미지
-                GeometryReader { geo in
-                    ZStack(alignment: .bottomLeading){
-                        Image("backgroundImage")
-                            .resizable()
-                            .frame(height: self.getHeightForHeaderImage(geo))
-                            .blur(radius: getBlurRadiusForImage(geo))
-                            .ignoresSafeArea()
-                            
-                        Image("profileImage")
-                            .resizable()
-                            .frame(width: 100,height: 100)
-                            .clipShape(Circle())
-                            .overlay(Circle().stroke(.white,lineWidth: 3))
-                            .offset(x:40,y: 50)
-                            .blur(radius: getBlurRadiusForProfileImage(geo))
-                    }
-                    .offset(x: 0, y: self.getOffsetForHeaderImage(geo)) // 3
-                    
-                }
-                .background(.orange)
-                .frame(width: UIScreen.main.bounds.width, height: 200)
-                
-                GeometryReader{ geo  in
-                    VStack{
+                ZStack{
+
+                    VStack(spacing: 5){
+                        Spacer()
+                            .frame(height:230)
                         followButton
-                            .blur(radius: getBlurRadiusForVstack(geo))
                         userDetail
-                            .blur(radius: getBlurRadiusForVstack(geo))
+                        filterBar
+                            .padding(.top,10)
                         dummyText
-//                        Spacer()
                     }
-                    .frame(height: max(geo.size.height, geo.size.width))
-                    .background(.green)
+                    .padding(.horizontal, 3)
+                    
+                    //Profile backgroumnd Image
+                    GeometryReader { geo in
+                        ZStack(alignment: .bottomLeading){
+                            Image("backgroundImage")
+                                .resizable()
+                                .frame(height: getHeightForHeaderImage(geo))
+                                .blur(radius: getBlurRadiusForImage(geo))
+                                .ignoresSafeArea()
+                            Image("profileImage")
+                                .resizable()
+                                .frame(width: 100,height: 100)
+                                .clipShape(Circle())
+                                .overlay(Circle().stroke(.white,lineWidth: 3))
+                                .offset(x:40,y: 50)
+                                .blur(radius: getBlurRadiusForProfileImage(geo))
+                        }
+                        .offset(y:getOffsetForHeaderImage(geo))
+                    }
+                    .frame(width: UIScreen.main.bounds.width)
+                    .ignoresSafeArea()
                 }
-                .background(.red)
                 Spacer()
-            }
-            
+            }//ScrollView
             .ignoresSafeArea()
             navBar
         }
-        
-        
-        
     }
 }
 
@@ -253,9 +243,9 @@ extension HomeView {
                 }
                 Text("공공칠빵 으악!,공공칠빵 으악!,공공칠빵 으악!,공공칠빵 으악!,공공칠빵 으악! 님 외 29명")
                     .font(.caption)
-//                    .lineLimit(nil)
+                //                    .lineLimit(nil)
             }
-
+            
             //question & answer & reject
             HStack{
                 VStack{
@@ -321,7 +311,7 @@ extension HomeView {
     
     var dummyText : some View {
         Text("Lorem ipsum dolor sit amet consectetur adipiscing elit donec, gravida commodo hac non mattis augue duis vitae inceptos, laoreet taciti at vehicula cum arcu dictum. Cras netus vivamus sociis pulvinar est erat, quisque imperdiet velit a justo maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdaf")
-
+        
     }
 }
 

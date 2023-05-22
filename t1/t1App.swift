@@ -11,7 +11,7 @@ import SwiftUI
 struct t1App: App {
     var body: some Scene {
         WindowGroup {
-            HomeView()
+            GeoTest()
         }
     }
 }

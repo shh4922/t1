@@ -4,7 +4,7 @@ struct HomeView: View {
     
     @State var topSafeArea  = UIApplication.shared.windows.first?.safeAreaInsets.top
     
-    @State var seleceFilter = HomeFilterEnum.newQuestion
+//    @State var seleceFilter = HomeFilterEnum.newQuestion
     
     @Namespace var animation
     
@@ -82,8 +82,10 @@ struct HomeView: View {
         let blur = (height - max(offset, 0)) / height // 3 (values will range from 0 - 1)
         return blur * 200 // Values will range from 0 - 6
     }
+    
+    
+    
     var body: some View {
-        
         ZStack(alignment: .top){
             ScrollView(.vertical,showsIndicators: false){
                 ZStack{
@@ -93,8 +95,8 @@ struct HomeView: View {
                             .frame(height:230)
                         followButton
                         userDetail
-                        filterBar
-                            .padding(.top,10)
+//                        filterBar
+//                            .padding(.top,10)
                         dummyText
                     }
                     .padding(.horizontal, 3)
@@ -127,6 +129,9 @@ struct HomeView: View {
         }
     }
 }
+
+
+
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
@@ -276,38 +281,37 @@ extension HomeView {
         .padding(.horizontal)
     }
     
-    
-    var filterBar : some View {
-        HStack{
-            ForEach(HomeFilterEnum.allCases, id:\.rawValue) { item in
-                VStack{
-                    if seleceFilter == item {
-                        Text(item.title)
-                            .fontWeight(.bold)
-                        Capsule()
-                            .foregroundColor(.blue)
-                            .frame(height: 2)
-                            .matchedGeometryEffect(id: "filter", in: animation)
-                    }else{
-                        Text(item.title)
-                            .fontWeight(.bold)
-                            .foregroundColor(.gray)
-                        Capsule()
-                            .foregroundColor(.clear)
-                            .frame(height: 2)
-                    }
-                    
-                }
-                .onTapGesture {
-                    withAnimation {
-                        seleceFilter = item
-                    }
-                }
-                
-            }
-        }
-        .padding(.vertical, 4)
-    }
+//    var filterBar : some View {
+//        HStack{
+//            ForEach(HomeFilterEnum.allCases, id:\.rawValue) { item in
+//                VStack{
+//                    if seleceFilter == item {
+//                        Text(item.title)
+//                            .fontWeight(.bold)
+//                        Capsule()
+//                            .foregroundColor(.blue)
+//                            .frame(height: 2)
+//                            .matchedGeometryEffect(id: "filter", in: animation)
+//                    }else{
+//                        Text(item.title)
+//                            .fontWeight(.bold)
+//                            .foregroundColor(.gray)
+//                        Capsule()
+//                            .foregroundColor(.clear)
+//                            .frame(height: 2)
+//                    }
+//
+//                }
+//                .onTapGesture {
+//                    withAnimation {
+//                        seleceFilter = item
+//                    }
+//                }
+//
+//            }
+//        }
+//        .padding(.vertical, 4)
+//    }
     
     var dummyText : some View {
         Text("Lorem ipsum dolor sit amet consectetur adipiscing elit donec, gravida commodo hac non mattis augue duis vitae inceptos, laoreet taciti at vehicula cum arcu dictum. Cras netus vivamus sociis pulvinar est erat, quisque imperdiet velit a justo maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdafjusto maecenas, pretium gravida ut himenaeos nam. Tellus quis libero sociis class nec hendrerit, id proin facilisis praesent bibendum vehicula tristique, fringilla augue vitae primis turpis.sdfsdfsdfdsfsdfsdaf")
